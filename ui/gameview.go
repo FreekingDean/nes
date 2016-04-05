@@ -3,6 +3,7 @@ package ui
 import (
 	"image"
 
+	"github.com/FreekingDean/deanio"
 	"github.com/fogleman/nes/nes"
 	"github.com/go-gl/gl/v2.1/gl"
 	"github.com/go-gl/glfw/v3.1/glfw"
@@ -31,6 +32,7 @@ func (view *GameView) Enter() {
 	view.console.SetAudioChannel(view.director.audio.channel)
 	view.console.SetAudioSampleRate(view.director.audio.sampleRate)
 	view.director.window.SetKeyCallback(view.onKey)
+	deanio.SaveInit(view.console)
 	// load state
 	if err := view.console.LoadState(savePath(view.hash)); err == nil {
 		return
@@ -75,6 +77,7 @@ func (view *GameView) Update(t, dt float64) {
 		view.director.ShowMenu()
 	}
 	updateControllers(window, console)
+	deanio.Step(console)
 	console.StepSeconds(dt)
 	gl.BindTexture(gl.TEXTURE_2D, view.texture)
 	setTexture(console.Buffer())
@@ -132,9 +135,8 @@ func drawBuffer(window *glfw.Window) {
 
 func updateControllers(window *glfw.Window, console *nes.Console) {
 	turbo := console.PPU.Frame%6 < 3
-	k1 := readKeys(window, turbo)
-	j1 := readJoystick(glfw.Joystick1, turbo)
 	j2 := readJoystick(glfw.Joystick2, turbo)
-	console.SetButtons1(combineButtons(k1, j1))
+	k1 := readKeys(window, turbo)
+	console.SetButtons1(combineButtons(k1, deanio.ReadController()))
 	console.SetButtons2(j2)
 }

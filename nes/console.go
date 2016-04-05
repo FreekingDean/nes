@@ -107,6 +107,7 @@ func (console *Console) SetAudioSampleRate(sampleRate float64) {
 		console.APU.filterChain = nil
 	}
 }
+
 func (console *Console) SaveState(filename string) error {
 	dir, _ := path.Split(filename)
 	if err := os.MkdirAll(dir, 0755); err != nil {

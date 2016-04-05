@@ -4,6 +4,7 @@ import (
 	"log"
 	"runtime"
 
+	"github.com/FreekingDean/deanio"
 	"github.com/go-gl/gl/v2.1/gl"
 	"github.com/go-gl/glfw/v3.1/glfw"
 	"github.com/gordonklaus/portaudio"
@@ -34,6 +35,11 @@ func Run(paths []string) {
 		log.Fatalln(err)
 	}
 	defer audio.Stop()
+
+	// initialize deanio
+	if err := deanio.Init(); err != nil {
+		log.Fatalln(err)
+	}
 
 	// initialize glfw
 	if err := glfw.Init(); err != nil {

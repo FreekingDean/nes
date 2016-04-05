@@ -46,6 +46,10 @@ func savePath(hash string) string {
 	return homeDir + "/.nes/save/" + hash + ".dat"
 }
 
+func shouldSnap(window *glfw.Window) bool {
+	return window.GetKey(glfw.KeyP) == glfw.Press
+}
+
 func readKey(window *glfw.Window, key glfw.Key) bool {
 	return window.GetKey(key) == glfw.Press
 }
